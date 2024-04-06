@@ -1,5 +1,5 @@
 #include "Renderer.h"
-
+#include "Sprite.h"
 Renderer Renderer::instance;
 
 Renderer::Renderer(std::string title, int width, int height, std::string icon) {
@@ -23,7 +23,7 @@ Renderer::Renderer(std::string title, int width, int height, std::string icon) {
         exit(-1);
     }
 
-    if (TTF_Init() == -1 || IMG_Init(-1) == 0 || Mix_Init(-1) == 0) {
+    if (TTF_Init() == -1 || IMG_Init(-1) == 0) {
         std::cout << "Error Init Library" << std::endl;
         this->~Renderer();
         exit(-1);

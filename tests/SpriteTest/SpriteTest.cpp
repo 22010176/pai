@@ -4,7 +4,7 @@ void SpriteTest::Main() {
     SDL_Surface* surfaceTest = IMG_Load("./assets/imgs/icon.jpg");
 
     Sprite surfaceSprite(surfaceTest);
-    SDL_FreeSurface(surfaceTest);
+    // SDL_FreeSurface(surfaceTest);
 
     SDL_Rect surfacePosition{ 0,0,40,50 };
     SDL_Rect rectPosition{ 40,40,30,40 };
