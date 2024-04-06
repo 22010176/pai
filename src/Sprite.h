@@ -19,7 +19,11 @@ public:
     ~Sprite();
 
     SDL_Texture* GetTexture() const { return this->texture; }
-    Sprite& SetTexture(SDL_Texture* texture) { this->texture = texture; return *this; }
+    Sprite& SetTexture(SDL_Texture* texture) {
+        this->texture = texture;
+        SDL_QueryTexture(this->texture, nullptr, nullptr, &this->width, &this->height);
+        return *this;
+    }
     Sprite& AddTexture(SDL_Texture* value, SDL_Rect position);
     Sprite& AddTexture(SDL_Surface* value, SDL_Rect position);
     Sprite& AddTexture(SDL_Rect value, SDL_Color color, SDL_Rect position);
@@ -35,3 +39,7 @@ public:
 };
 
 
+// class Text : public Sprite {
+// public:
+//     static SDL_Surface* RenderText(TTF_Font* font, std::string content, SDL_Color color = white) { return TTF_RenderText_Solid(font, content.c_str(), color); };
+// };

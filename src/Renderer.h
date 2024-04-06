@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "Sprite.h"
 #include "Constant.h"
 
 class Sprite;
@@ -34,8 +35,8 @@ public:
         SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
         SDL_RenderClear(this->renderer);
     }
-    void Draw(SDL_Texture* texture, SDL_Rect position, double angle = 0) {
-        SDL_RenderCopyEx(instance.GetRenderer(), texture, nullptr, &position, angle, nullptr, SDL_FLIP_NONE);
+    void Draw(Sprite& sprite, SDL_Rect position) {
+        SDL_RenderCopyEx(instance.GetRenderer(), sprite.GetTexture(), nullptr, &position, sprite.GetAngle(), nullptr, SDL_FLIP_NONE);
     }
     void Render() const { SDL_RenderPresent(this->renderer); };
 };
