@@ -15,7 +15,9 @@ private:
 public:
     static GameOptions& Get() { return instance; }
 
-    ~GameOptions() {}
+    ~GameOptions() {
+        std::cout << "Clear gameOptions" << std::endl;
+    }
 
     bool GetFullScene() const { return this->fullScene; }
     GameOptions& SetFullScene(bool value);

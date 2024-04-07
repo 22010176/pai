@@ -4,9 +4,9 @@
 #include <string>
 
 #include <SDL2/SDL.h>
-#include <src/Renderer.h>
 
-#include "Sprite.h"
+#include <src/Renderer.h>
+#include <src/Sprite.h>
 
 class Entity : public Sprite {
 private:

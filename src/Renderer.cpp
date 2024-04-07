@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Sprite.h"
+
 Renderer Renderer::instance;
 
 Renderer::Renderer(std::string title, int width, int height, std::string icon) {
@@ -46,7 +47,7 @@ Renderer::~Renderer() {
     Mix_Quit();
     TTF_Quit();
     SDL_Quit();
-    std::cout << "Finish Clean Up" << std::endl;
+    std::cout << "Finish clear renderer" << std::endl;
 }
 
 void Renderer::MainLoop() {

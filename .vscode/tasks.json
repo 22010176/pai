@@ -10,6 +10,7 @@
                 "-Wall",
                 "${workspaceFolder}\\*.cpp",
                 "${workspaceFolder}\\src\\*.cpp",
+                // "${workspaceFolder}\\src\\scenes\\*.cpp",
                 // "${workspaceFolder}\\scenes\\*.cpp",
                 "${workspaceFolder}\\tests\\SpriteTest\\*.cpp",
                 "-I${workspaceFolder}\\include",

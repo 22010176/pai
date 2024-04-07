@@ -5,16 +5,14 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include <src/Sprite.h>
 #include <src/Renderer.h>
+#include <src/Sprite.h>
 #include <src/Utilities.h>
 #include <src/GameOptions.h>
+
 #include <Constant.h>
 
-std::vector<Sprite> s{};
-
 void DrawStartScene() {
-
     SDL_Rect btnSize = { 0,0,350,70 };
     int offset = 50;
     TTF_Font* font = TTF_OpenFont(".\\assets\\fonts\\Source Code Pro\\SourceCodePro-ExtraBold.ttf", 50);
@@ -121,19 +119,17 @@ void OptionsScene() {
     // Renderer::Get().Draw(&optionsText);
     // Renderer::Get().Draw(&checkBox);
 }
-void loop2();
-void loop();
+
 int main(int argc, char* argv[]) {
-    Renderer::Get().SetMainLoop(loop);
+    // Renderer::Get().SetMainLoop(StartScene::Get().MainLoop());
+    // Renderer::Get().SetEventFunc(StartScene::Get().EventFunc());
+
+    // int* a = new int;
+    // int& b = *a;
+    // std::cout << &b << " " << a;
+
     Renderer::Get().MainLoop();
 
+
     return 0;
-}
-void loop2() {
-    std::cout << "HEllo 2" << std::endl;
-    Renderer::Get().SetMainLoop(loop);
-}
-void loop() {
-    std::cout << "HEllo 1" << std::endl;
-    Renderer::Get().SetMainLoop(loop2);
 }

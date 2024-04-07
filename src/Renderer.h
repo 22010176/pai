@@ -21,8 +21,8 @@ class Renderer {
 private:
     static Renderer instance;
 
-    SDL_Renderer* renderer;
-    SDL_Window* window;
+    SDL_Renderer* renderer = nullptr;
+    SDL_Window* window = nullptr;
     bool isRunning = true;
 
     std::function <void()> mainLoop = _Loop;
@@ -30,7 +30,7 @@ private:
 
     Renderer(std::string title = "", int width = WIDTH, int height = HEIGHT, std::string icon = "./assets/imgs/icon.jpg");
 public:
-    static Renderer& Get() { return Renderer::instance; }
+    static Renderer& Get() { return instance; }
 
     Renderer(const Renderer& renderer) = delete;
     ~Renderer();
