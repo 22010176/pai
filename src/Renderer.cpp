@@ -48,3 +48,41 @@ Renderer::~Renderer() {
     SDL_Quit();
     std::cout << "Finish Clean Up" << std::endl;
 }
+
+void Renderer::MainLoop() {
+    SDL_Event e;
+    while (isRunning) {
+        this->Clear();
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) this->isRunning = false;
+
+
+            this->eventFunc(e);
+        }
+
+        this->mainLoop();
+
+        this->Render();
+        SDL_Delay(1000 / FPS);
+    }
+}
+
+void Renderer::Draw(Sprite* sprite) {
+    SDL_Rect pos = sprite->GetPos();
+    if (sprite->GetAngle() == 0.0) {
+        SDL_RenderCopy(renderer, sprite->GetTexture(), nullptr, &pos);
+        return;
+    }
+    SDL_RenderCopyEx(renderer, sprite->GetTexture(), nullptr, &pos, sprite->GetAngle(), nullptr, SDL_FLIP_NONE);
+}
+
+void Renderer::Clear() const {
+    SDL_SetRenderTarget(this->renderer, nullptr);
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+    SDL_RenderClear(this->renderer);
+}
+
+void _Loop() {}
+void _Event(SDL_Event&) {}
+
+void Renderer::SetFullScrene() {}

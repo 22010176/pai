@@ -9,8 +9,9 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 
-#define max(a, b)                               (a) > (b) ? (a) : (b)
-#define CalcPadding(width, innerWidth)          max((((width) - (innerWidth)) / 2), 0)
+// #define max(a, b)                               (a) > (b) ? (a) : (b)
+// #define min(a, b)                               (a) < (b) ? (a) : (b)
+#define CalcPadding(width, innerWidth)          ((width) - (innerWidth)) / 2 
 
 std::vector<std::string> SplitStr(std::string s, std::string del = " ");
 bool CheckCollide(SDL_Rect* pos, SDL_Point* point);
