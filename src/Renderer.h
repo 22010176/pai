@@ -14,24 +14,20 @@
 
 class Sprite;
 
-void _Loop();
-void _Event(SDL_Event&);
+// void _Loop();
+// void _Event(SDL_Event&);
 
 class Renderer {
 private:
-    static Renderer instance;
-
     SDL_Renderer* renderer = nullptr;
     SDL_Window* window = nullptr;
     bool isRunning = true;
 
-    std::function <void()> mainLoop = _Loop;
-    std::function <void(SDL_Event&)> eventFunc = _Event;
+    std::function<void()> mainLoop = []() {};
+    std::function<void(SDL_Event&)> eventFunc = [](SDL_Event&) {};
 
-    Renderer(std::string title = "", int width = WIDTH, int height = HEIGHT, std::string icon = "./assets/imgs/icon.jpg");
 public:
-    static Renderer& Get() { return instance; }
-
+    Renderer(std::string title = "", int width = WIDTH, int height = HEIGHT, std::string icon = "");
     Renderer(const Renderer& renderer) = delete;
     ~Renderer();
 
@@ -45,8 +41,8 @@ public:
     SDL_Point GetMousePos() const { int x, y; SDL_GetMouseState(&x, &y); return { x,y }; }
 
     void MainLoop();
-    void SetMainLoop(std::function<void()> mainLoop = _Loop) { this->mainLoop = mainLoop; }
-    void SetEventFunc(std::function<void(SDL_Event&)> eventFunc = _Event) { this->eventFunc = eventFunc; }
+    void SetMainLoop(std::function<void()> mainLoop = []() {}) { this->mainLoop = mainLoop; }
+    void SetEventFunc(std::function<void(SDL_Event&)> eventFunc = [](SDL_Event&) {}) { this->eventFunc = eventFunc; }
 
     void SetFullScrene();
 };

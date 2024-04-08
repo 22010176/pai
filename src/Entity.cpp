@@ -1,21 +1,31 @@
 #include "Entity.h"
 
+// void __a(Entity&) {}
 
-Entity::Entity(SDL_Surface* surface, double angle) : Sprite(surface, angle) {
+Entity::Entity(Renderer& renderer, SDL_Surface* surface, double angle) : Sprite(renderer, surface, angle) {
     this->textures.insert({ "_",this->texture });
+    this->textures.insert({ "disable",nullptr });
+    SetSprite("_");
 }
-Entity::Entity(SDL_Texture* texture, double angle) : Sprite(texture, angle) {
+Entity::Entity(Renderer& renderer, SDL_Texture* texture, double angle) : Sprite(renderer, texture, angle) {
     this->textures.insert({ "_",this->texture });
+    this->textures.insert({ "disable",nullptr });
+    SetSprite("_");
 }
-Entity::Entity(SDL_Rect rect, SDL_Color color) : Sprite(rect, color) {
+Entity::Entity(Renderer& renderer, SDL_Rect rect, SDL_Color color) : Sprite(renderer, rect, color) {
     this->textures.insert({ "_",this->texture });
+    this->textures.insert({ "disable",nullptr });
+    SetSprite("_");
 }
-Entity::Entity(int width, int height) : Sprite(width, height) {
+Entity::Entity(Renderer& renderer, int width, int height) : Sprite(renderer, width, height) {
     this->textures.insert({ "_",this->texture });
+    this->textures.insert({ "disable",nullptr });
+    SetSprite("_");
 }
 Entity::~Entity() {
-    for (const auto& sp : textures)
-        if (sp.second != this->texture) SDL_DestroyTexture(sp.second);
+    // this->texture = nullptr;
+    for (const auto& [key, value] : textures) SDL_DestroyTexture(value);
+    std::cout << "Clear Btn" << std::endl;
 }
 
 void Entity::SetSprite(std::string name) {
@@ -27,7 +37,7 @@ Entity& Entity::AddSprite(std::string name, SDL_Texture* texture) {
     if (texture == nullptr || name == "_") return *this;
 
     int w, h; SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-    this->textures[name] = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
+    this->textures[name] = SDL_CreateTexture(renderer.GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
     SetSprite(name);
     AddTexture(texture, { 0,0,w,h });
 
@@ -36,7 +46,7 @@ Entity& Entity::AddSprite(std::string name, SDL_Texture* texture) {
 Entity& Entity::AddSprite(std::string name, SDL_Surface* surface) {
     if (surface == nullptr || name == "_") return *this;
 
-    this->textures[name] = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, surface->w, surface->h);
+    this->textures[name] = SDL_CreateTexture(renderer.GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, surface->w, surface->h);
     SetSprite(name);
     AddTexture(surface, { 0,0,surface->w,surface->h });
 
@@ -46,7 +56,7 @@ Entity& Entity::AddSprite(std::string name, SDL_Surface* surface) {
 Entity& Entity::AddSprite(std::string name, int width, int height) {
     if (width == 0 || height == 0 || name == "_") return *this;
 
-    this->textures[name] = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    this->textures[name] = SDL_CreateTexture(renderer.GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
     SetSprite(name);
 
     return *this;
@@ -54,9 +64,10 @@ Entity& Entity::AddSprite(std::string name, int width, int height) {
 
 Entity& Entity::AddSprite(std::string name) {
     if (name == "_") return *this;
-    this->textures[name] = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    this->textures[name] = SDL_CreateTexture(renderer.GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
     SetSprite(name);
     AddTexture(this->textures["_"], { 0,0,width,height });
 
     return *this;
 }
+

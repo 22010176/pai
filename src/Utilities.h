@@ -22,3 +22,6 @@ SDL_Texture* DisplayImage(SDL_Renderer* renderer, std::string const path);
 SDL_Texture* CreateBtnTex(SDL_Renderer* renderer, SDL_Texture* text, SDL_Color color, int width = 10, int height = 10);
 
 SDL_Rect GetMiddle(const SDL_Rect& r1, const SDL_Rect& r2);
+
+SDL_Texture* CloneTexture(SDL_Renderer* renderer, SDL_Texture* texture);
+SDL_Texture* CloneTexture(SDL_Renderer* renderer, SDL_Surface* texture);

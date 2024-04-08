@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include "Sprite.h"
 
-Renderer Renderer::instance;
+
 
 Renderer::Renderer(std::string title, int width, int height, std::string icon) {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -54,21 +54,23 @@ void Renderer::MainLoop() {
     SDL_Event e;
     while (isRunning) {
         this->Clear();
+
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) this->isRunning = false;
-
-
             this->eventFunc(e);
         }
 
         this->mainLoop();
-
         this->Render();
         SDL_Delay(1000 / FPS);
     }
 }
 
 void Renderer::Draw(Sprite* sprite) {
+    if (sprite->GetTexture() == nullptr) return;
+
+    sprite->Update();
+
     SDL_Rect pos = sprite->GetPos();
     if (sprite->GetAngle() == 0.0) {
         SDL_RenderCopy(renderer, sprite->GetTexture(), nullptr, &pos);
@@ -83,7 +85,7 @@ void Renderer::Clear() const {
     SDL_RenderClear(this->renderer);
 }
 
-void _Loop() {}
-void _Event(SDL_Event&) {}
+// void _Loop() {}
+// void _Event(SDL_Event&) {}
 
 void Renderer::SetFullScrene() {}

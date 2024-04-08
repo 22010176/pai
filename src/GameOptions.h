@@ -8,13 +8,14 @@
 class GameOptions {
 private:
     static GameOptions instance;
+
     bool fullScene = false;
     int width = WIDTH, height = HEIGHT;
 
-    GameOptions() {}
 public:
     static GameOptions& Get() { return instance; }
 
+    GameOptions() {}
     ~GameOptions() {
         std::cout << "Clear gameOptions" << std::endl;
     }

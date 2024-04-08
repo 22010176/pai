@@ -67,3 +67,27 @@ bool CheckCollide(SDL_Rect* pos, SDL_Point* point) {
 SDL_Rect GetMiddle(const SDL_Rect& r1, const SDL_Rect& r2) {
     return { r1.x + CalcPadding(r1.w,r2.w),r1.y + CalcPadding(r1.h,r2.h),r2.w,r2.h };
 }
+
+SDL_Texture* CloneTexture(SDL_Renderer* renderer, SDL_Texture* texture) {
+    int w, h; SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
+    SDL_Texture* res = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
+
+    SDL_SetRenderTarget(renderer, res);
+    SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+    SDL_SetRenderTarget(renderer, nullptr);
+
+    return res;
+}
+
+SDL_Texture* CloneTexture(SDL_Renderer* renderer, SDL_Surface* surface) {
+    SDL_Texture* res = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, surface->w, surface->h);
+    SDL_Texture* temp = SDL_CreateTextureFromSurface(renderer, surface);
+
+    SDL_SetRenderTarget(renderer, res);
+    SDL_RenderCopy(renderer, temp, nullptr, nullptr);
+    SDL_SetRenderTarget(renderer, nullptr);
+
+    SDL_DestroyTexture(temp);
+
+    return res;
+}
