@@ -91,3 +91,4 @@ SDL_Texture* CloneTexture(SDL_Renderer* renderer, SDL_Surface* surface) {
 
     return res;
 }
+

@@ -12,7 +12,7 @@
 class Entity : public Sprite {
 private:
     std::map <std::string, SDL_Texture*> textures{};
-    std::function<void(Entity&)> updateFunc = [](Entity&) {};
+    std::map<std::string, std::function<void(Entity&)>> updateFunc{};
 
 public:
     Entity(Renderer& renderer, SDL_Surface* surface, double angle = 0);
@@ -27,7 +27,17 @@ public:
     Entity& AddSprite(std::string name, SDL_Surface* surface);
     Entity& AddSprite(std::string name, int width, int height);
 
-    Entity& SetUpdateFunc(std::function<void(Entity&)> func = [](Entity&) {}) { this->updateFunc = func; return *this; }
-    virtual void Update() { updateFunc(*this); }
+    Entity& AddUpdateFunc(std::string name, std::function<void(Entity&)> func) {
+        this->updateFunc[name] = func;
+        return *this;
+    }
+    Entity& RemoveUpdateFunc(std::string name) {
+        this->updateFunc.erase(name);
+        return *this;
+    }
+    std::function<void(Entity&)> GetFunc(std::string name) const { return this->updateFunc.at(name); }
+    virtual void Update() { for (const auto& [key, value] : this->updateFunc) value(*this); }
 };
 
+Entity& CreateBtn(Renderer& renderer, SDL_Surface* surface, int w, int h, SDL_Color color, SDL_Color hoverColor);
+// std::function<void(Entity&)> ClickEvent(Renderer& renderer, std::function<void(Entity&)> func);

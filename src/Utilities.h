@@ -25,3 +25,4 @@ SDL_Rect GetMiddle(const SDL_Rect& r1, const SDL_Rect& r2);
 
 SDL_Texture* CloneTexture(SDL_Renderer* renderer, SDL_Texture* texture);
 SDL_Texture* CloneTexture(SDL_Renderer* renderer, SDL_Surface* texture);
+

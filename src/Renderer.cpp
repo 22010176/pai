@@ -18,6 +18,8 @@ Renderer::Renderer(std::string title, int width, int height, std::string icon) {
     }
 
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
     if (this->renderer == nullptr) {
         std::cout << "Error Init Renderer" << std::endl;
         this->~Renderer();
@@ -51,17 +53,17 @@ Renderer::~Renderer() {
 }
 
 void Renderer::MainLoop() {
-    SDL_Event e;
     while (isRunning) {
         this->Clear();
+        events.FetchEvent();
 
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) this->isRunning = false;
-            this->eventFunc(e);
-        }
+        if (events.CheckEvent(SDL_QUIT)) this->isRunning = false;
 
         this->mainLoop();
+
         this->Render();
+        events.ClearEvent();
+
         SDL_Delay(1000 / FPS);
     }
 }

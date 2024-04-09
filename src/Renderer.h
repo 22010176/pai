@@ -9,16 +9,16 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "Sprite.h"
+
+#include <src/Sprite.h>
+#include <src/EventManager.h>
 #include "Constant.h"
 
 class Sprite;
 
-// void _Loop();
-// void _Event(SDL_Event&);
-
 class Renderer {
 private:
+    EventManager events{};
     SDL_Renderer* renderer = nullptr;
     SDL_Window* window = nullptr;
     bool isRunning = true;
@@ -44,6 +44,10 @@ public:
     void SetMainLoop(std::function<void()> mainLoop = []() {}) { this->mainLoop = mainLoop; }
     void SetEventFunc(std::function<void(SDL_Event&)> eventFunc = [](SDL_Event&) {}) { this->eventFunc = eventFunc; }
 
+    SDL_Event GetEvent(SDL_EventType type) const { return this->events.GetEvent(type); }
+    bool CheckEvent(SDL_EventType type) const { return this->events.CheckEvent(type); }
+
+    void TerminateProgram() { this->isRunning = false; }
     void SetFullScrene();
 };
 

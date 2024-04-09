@@ -19,7 +19,6 @@ public:
     ~Scene() {}
 
     virtual std::function<void()> GetLoopFunc() const = 0;
-    virtual std::function<void(SDL_Event&)> GetEventFunc() const = 0;
 
     Renderer& GetRenderer() const { return this->renderer; }
     std::map<std::string, Entity&> GetSprites() const { return sprites; }
@@ -32,3 +31,4 @@ public:
     Entity& GetEntity(std::string name) { return this->sprites.at(name); }
 };
 
+// Entity& CreateBtn(Renderer& renderer, SDL_Surface* surface, int w, int h, SDL_Color color, SDL_Color hoverColor);
