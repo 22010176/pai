@@ -1,4 +1,4 @@
-#include "Utilities.h"
+#include <src/Utilities.h>
 
 SDL_Texture* WriteText(SDL_Renderer* renderer, TTF_Font* font, std::string const message, SDL_Color color) {
     SDL_Surface* messageSurface = TTF_RenderText_Solid(font, message.c_str(), color);

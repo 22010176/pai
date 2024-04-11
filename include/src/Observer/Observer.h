@@ -5,6 +5,7 @@ template <typename T> class Observer {
 private:
     inline static int idSeed = 0;
     int id;
+
 public:
     Observer() : id(++idSeed) {}
 

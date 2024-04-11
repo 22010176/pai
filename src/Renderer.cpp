@@ -1,7 +1,5 @@
-#include "Renderer.h"
-#include "Sprite.h"
-
-
+#include <src/Renderer.h>
+#include <src/Entity.h>
 
 Renderer::Renderer(std::string title, int width, int height, std::string icon) {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -38,7 +36,7 @@ Renderer::Renderer(std::string title, int width, int height, std::string icon) {
     std::cout << "Successful initialize library!" << std::endl;
 
     if (icon == "") return;
-    SDL_Surface* surface = IMG_Load("./assets/imgs/icon.jpg");
+    SDL_Surface* surface = IMG_Load("assets/imgs/icon.jpg");
     SDL_SetWindowIcon(this->window, surface);
 
     SDL_FreeSurface(surface);
@@ -55,39 +53,30 @@ Renderer::~Renderer() {
     std::cout << "Finish clear renderer" << std::endl;
 }
 
-void Renderer::MainLoop() {
-    while (isRunning) {
-        this->Clear();
-        events.FetchEvent();
-
-        if (events.CheckEvent(SDL_QUIT)) this->isRunning = false;
-
-        this->mainLoop();
-
-        this->Render();
-        events.ClearEvent();
-
-        SDL_Delay(1000 / FPS);
-    }
-}
-
-void Renderer::Draw(Sprite* sprite) {
-    if (sprite->GetTexture() == nullptr) return;
-
-    sprite->Update();
-
-    SDL_Rect pos = sprite->GetPos();
-    if (sprite->GetAngle() == 0.0) {
-        SDL_RenderCopy(renderer, sprite->GetTexture(), nullptr, &pos);
-        return;
-    }
-    SDL_RenderCopyEx(renderer, sprite->GetTexture(), nullptr, &pos, sprite->GetAngle(), nullptr, SDL_FLIP_NONE);
-}
-
 void Renderer::Clear() const {
     SDL_SetRenderTarget(this->renderer, nullptr);
     SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
     SDL_RenderClear(this->renderer);
 }
+void Renderer::Draw(Entity& sprite) {
+    static int count = 0;
+    if (sprite.GetTexture() == nullptr) return;
 
-void Renderer::SetFullScrene() {}
+    AddItem(++count, sprite);
+}
+void Renderer::Delete(Entity& sprite) {
+    for (const auto& [key, value] : this->pools)
+        if (&value == &sprite) this->pools.erase(key);
+}
+void Renderer::Render() {
+    this->Clear();
+
+    for (const auto& [key, entity] : this->pools) {
+        SDL_Rect rect = entity.GetPos();
+        SDL_RenderCopyEx(this->renderer, entity.GetTexture(), nullptr, &rect, entity.GetAngle(), nullptr, SDL_FLIP_NONE);
+    }
+
+    SDL_RenderPresent(this->renderer);
+    Manager<int, Entity&>::Clear();
+}
+// void Renderer::SetFullScrene() {}
