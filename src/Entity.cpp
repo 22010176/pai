@@ -86,6 +86,8 @@ Entity& CreateBtn(Renderer& renderer, SDL_Surface* surface, int w, int h, SDL_Co
         static std::map<Entity*, SDL_Rect> pos;
         static bool isClick = false;
 
+        std::cout << "Click Funfc: " << pos.size() << std::endl;
+
         SDL_Point mousePos = renderer.GetMousePos();
         if (pos.find(&entity) == pos.end()) pos[&entity] = entity.GetPos();
 

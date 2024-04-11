@@ -32,11 +32,14 @@ StartScene::StartScene(Renderer& renderer) : Scene(renderer) {
     Entity& logo = *new Entity(renderer, logoT, -5);
     logo.SetPos({ CalcPadding(GameOptions::Get().GetWidth(),600),50,600,200 });
 
+    Entity& cover = *new Entity(renderer, WIDTH, HEIGHT);
+
     this->AddSprite("playBtn", playBtn);
     this->AddSprite("quitBtn", quitBtn);
     this->AddSprite("optBtn", optBtn);
     this->AddSprite("imgS", imgS);
     this->AddSprite("logo", logo);
+    this->AddSprite("cover", cover);
 
     this->GetEntity("logo").AddUpdateFunc("mainAnimation", [](Entity& entity) {
         static double i = 0;
@@ -48,32 +51,33 @@ StartScene::StartScene(Renderer& renderer) : Scene(renderer) {
         });
 
     this->GetEntity("quitBtn").AddUpdateFunc("quitEvent", [&](Entity& entity) {
-        static bool isClick = false;
-
-        SDL_Point mousePos = renderer.GetMousePos();
+        static bool isHover = false;
         static SDL_Rect pos = entity.GetPos();
 
-        if (renderer.CheckEvent(SDL_MOUSEBUTTONDOWN) && CheckCollide(&pos, &mousePos)) {
-            isClick = true;
-            return;
-        }
+        SDL_Point mousePos = renderer.GetMousePos();
+        isHover = CheckCollide(&pos, &mousePos);
 
-        if (isClick && renderer.CheckEvent(SDL_MOUSEBUTTONUP)) renderer.TerminateProgram();
-
+        if (isHover && renderer.CheckEvent(SDL_MOUSEBUTTONUP)) renderer.TerminateProgram();
         });
 
     this->GetEntity("optBtn").AddUpdateFunc("changeOptEvent", [&](Entity& entity) {
-        static bool isClick = false;
-
-        SDL_Point mousePos = renderer.GetMousePos();
+        static bool isHover = false;
         static SDL_Rect pos = entity.GetPos();
 
-        if (renderer.CheckEvent(SDL_MOUSEBUTTONDOWN) && CheckCollide(&pos, &mousePos)) {
-            isClick = true;
-            return;
-        }
+        SDL_Point mousePos = renderer.GetMousePos();
+        isHover = CheckCollide(&pos, &mousePos);
 
-        if (isClick && renderer.CheckEvent(SDL_MOUSEBUTTONUP)) renderer.SetMainLoop(OptionScene::Get().GetLoopFunc());
+        if (isHover && renderer.CheckEvent(SDL_MOUSEBUTTONUP)) renderer.SetMainLoop(OptionScene::Get().GetLoopFunc());
+        });
+
+    this->GetEntity("optBtn").AddUpdateFunc("changeOptEvent", [&](Entity& entity) {
+        static bool isHover = false;
+        static SDL_Rect pos = entity.GetPos();
+
+        SDL_Point mousePos = renderer.GetMousePos();
+
+        isHover = CheckCollide(&pos, &mousePos);
+        if (isHover && renderer.CheckEvent(SDL_MOUSEBUTTONUP)) renderer.SetMainLoop(OptionScene::Get().GetLoopFunc());
         });
 
     TTF_CloseFont(font);
@@ -85,7 +89,9 @@ StartScene::StartScene(Renderer& renderer) : Scene(renderer) {
     SDL_FreeSurface(logoT);
     SDL_FreeSurface(img);
 }
-StartScene::~StartScene() { for (const auto& a : this->sprites) a.second.~Entity(); }
+StartScene::~StartScene() {
+    // for (const auto& a : this->sprites) a.second.~Entity();
+}
 
 void SS_LoopFunc() {
     StartScene::Get().GetRenderer().Draw(&StartScene::Get().GetEntity("playBtn"));

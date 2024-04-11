@@ -16,7 +16,7 @@ protected:
 
 public:
     Scene(Renderer& renderer) : renderer(renderer) {}
-    ~Scene() {}
+    ~Scene() { for (const auto& a : this->sprites) a.second.~Entity(); }
 
     virtual std::function<void()> GetLoopFunc() const = 0;
 

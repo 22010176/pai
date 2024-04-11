@@ -11,6 +11,8 @@ Renderer::Renderer(std::string title, int width, int height, std::string icon) {
     }
 
     this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_SHOWN);
+    SDL_SetWindowOpacity(this->window, 0.0);
+
     if (this->window == nullptr) {
         std::cout << "Error Init Window" << std::endl;
         this->~Renderer();
@@ -19,6 +21,7 @@ Renderer::Renderer(std::string title, int width, int height, std::string icon) {
 
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetWindowOpacity(this->window, 1.0);
 
     if (this->renderer == nullptr) {
         std::cout << "Error Init Renderer" << std::endl;
@@ -26,7 +29,7 @@ Renderer::Renderer(std::string title, int width, int height, std::string icon) {
         exit(-1);
     }
 
-    if (TTF_Init() == -1 || IMG_Init(-1) == 0) {
+    if (TTF_Init() == -1 || IMG_Init(-1) == 0 || Mix_Init(-1) == 0) {
         std::cout << "Error Init Library" << std::endl;
         this->~Renderer();
         exit(-1);
@@ -86,8 +89,5 @@ void Renderer::Clear() const {
     SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
     SDL_RenderClear(this->renderer);
 }
-
-// void _Loop() {}
-// void _Event(SDL_Event&) {}
 
 void Renderer::SetFullScrene() {}

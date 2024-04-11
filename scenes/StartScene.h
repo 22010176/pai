@@ -20,5 +20,7 @@ public:
     StartScene(const StartScene&) = delete;
     ~StartScene();
 
+    friend void SS_LoopFunc();
+
     virtual std::function<void()> GetLoopFunc() const { return SS_LoopFunc; }
 };
