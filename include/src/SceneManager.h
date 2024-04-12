@@ -4,18 +4,20 @@
 #include <map>
 #include <functional>
 
+#include <src/Manager.h>
 #include <src/Scene.h>
 
-class SceneManager {
+class SceneManager : public Manager<std::string, Scene*> {
 private:
-    std::map<std::string, Scene&> scenes;
     std::string name;
-public:
-    SceneManager() {};
-    ~SceneManager() {};
 
-    void AddScene(std::string name, Scene& scene) { this->scenes.insert({ name, scene }); }
-    void SetScene(std::string name) { this->name = name; };
-    Scene& GetScene() { return scenes.at(name); }
-    Scene& GetScene(std::string name) { return scenes.at(name); }
+public:
+    SceneManager() {}
+    ~SceneManager() {}
+
+    void SetScene(std::string name) { this->name = name; }
+    void LoopFunc() {
+        GetItem(name)->Loop();
+        for (auto& f : GetItem(name)->callbacks) f();
+    }
 };

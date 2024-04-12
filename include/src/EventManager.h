@@ -7,9 +7,6 @@
 #include <src/Manager.h>
 
 class EventManager : public Manager<SDL_EventType, SDL_Event> {
-private:
-    SDL_Event event;
-
 public:
     EventManager() {}
     EventManager(const EventManager&) = delete;
@@ -17,8 +14,10 @@ public:
 
     void FetchEvent() {
         Clear();
-        while (SDL_PollEvent(&this->event))
-            AddItem((SDL_EventType)this->event.type, SDL_Event(event));
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            AddItem((SDL_EventType)event.type, SDL_Event(event));
+        }
     }
 };
 

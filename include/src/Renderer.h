@@ -16,7 +16,7 @@
 
 class Entity;
 
-class Renderer : public Manager<int, Entity&> {
+class Renderer : public Manager<int, Entity*> {
 private:
     EventManager events{};
     SDL_Renderer* renderer = nullptr;
@@ -34,8 +34,8 @@ public:
     SDL_Window* GetWindow() const { return this->window; }
 
     void Clear() const;
-    void Draw(Entity& sprite);
-    void Delete(Entity& sprite);
+    void Draw(Entity* sprite);
+    void Delete(Entity* sprite);
     void Render();
 };
 

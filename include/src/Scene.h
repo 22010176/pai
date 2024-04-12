@@ -10,16 +10,18 @@
 #include <src/Manager.h>
 #include <src/Entity.h>
 
-class Scene : public Manager<std::string, Entity&> {
+class Scene : public Manager<std::string, Entity*> {
 protected:
-    Renderer& renderer;
+    Renderer* renderer;
 
 public:
-    Scene(Renderer& renderer) : renderer(renderer) {}
-    ~Scene() { for (const auto& [key, value] : this->pools) value.~Entity(); }
+    std::vector<std::function<void()>> callbacks;
 
-    virtual std::function<void()> GetLoopFunc() const = 0;
-    virtual std::function<void(SDL_Event)> GetEventFunc() const = 0;
+    Scene(Renderer* renderer) : renderer(renderer) {}
+    ~Scene() { for (const auto& [key, value] : this->pools) delete value; }
 
-    Renderer& GetRenderer() const { return this->renderer; }
+    virtual void Loop() = 0;
+    virtual void Event() = 0;
+
+    Renderer* GetRenderer() const { return this->renderer; }
 };

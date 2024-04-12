@@ -8,28 +8,36 @@
 #include <src/Renderer.h>
 #include <src/Entity.h>
 #include <src/Utilities.h>
-// #include <src/GameOptions.h>
 #include <src/Constant.h>
-// #include <src/SceneManager.h>
+#include <src/EventManager.h>
+#include <src/SceneManager.h>
 
-// #include <scenes/StartScene.h>
-// #include <scenes/OptionScene.h>
+#include <scenes/StartScene.h>
 
 Renderer mainWindow("", WIDTH, HEIGHT, "assets/imgs/icon.jpg");
-// SceneManager scenes;
+StartScene StartScene::instance(&mainWindow);
 
-// StartScene StartScene::instance(mainWindow);
-// OptionScene OptionScene::instance(mainWindow);
+SceneManager scenes;
+
+EventManager events;
+bool isRunning = true;
 
 int main(int argc, char* argv[]) {
     srand(time(nullptr));
 
-    // scenes.AddScene("startScene", StartScene::Get());
-    // scenes.AddScene("optionScene", OptionScene::Get());
+    scenes.AddItem("startScene", StartScene::Get());
+    scenes.SetScene("startScene");
 
+    while (isRunning) {
+        events.FetchEvent();
+        if (events.HasItem(SDL_QUIT)) isRunning = false;
 
-    // mainWindow.SetMainLoop(StartScene::Get().GetLoopFunc());
-    // mainWindow.MainLoop();
+        scenes.LoopFunc();
+
+        mainWindow.Render();
+        SDL_Delay(1000 / FPS);
+    }
+
 
     return 0;
 }

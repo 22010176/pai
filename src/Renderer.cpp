@@ -58,13 +58,13 @@ void Renderer::Clear() const {
     SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
     SDL_RenderClear(this->renderer);
 }
-void Renderer::Draw(Entity& sprite) {
+void Renderer::Draw(Entity* sprite) {
     static int count = 0;
-    if (sprite.GetTexture() == nullptr) return;
+    if (sprite->GetTexture() == nullptr) return;
 
     AddItem(++count, sprite);
 }
-void Renderer::Delete(Entity& sprite) {
+void Renderer::Delete(Entity* sprite) {
     for (const auto& [key, value] : this->pools)
         if (&value == &sprite) this->pools.erase(key);
 }
@@ -72,11 +72,11 @@ void Renderer::Render() {
     this->Clear();
 
     for (const auto& [key, entity] : this->pools) {
-        SDL_Rect rect = entity.GetPos();
-        SDL_RenderCopyEx(this->renderer, entity.GetTexture(), nullptr, &rect, entity.GetAngle(), nullptr, SDL_FLIP_NONE);
+        SDL_Rect rect = entity->GetPos();
+        SDL_RenderCopyEx(this->renderer, entity->GetTexture(), nullptr, &rect, entity->GetAngle(), NULL, SDL_FLIP_NONE);
     }
 
     SDL_RenderPresent(this->renderer);
-    Manager<int, Entity&>::Clear();
+    Manager<int, Entity*>::Clear();
 }
 // void Renderer::SetFullScrene() {}
