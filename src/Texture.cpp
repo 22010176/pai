@@ -1,12 +1,5 @@
 #include <src/Texture.h>
 
-SDL_Texture* CreateTexture(SDL_Renderer* renderer, int width, int height) {
-    SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
-    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
-
-    return texture;
-}
-
 SDL_Texture* CopyTexture(SDL_Renderer* renderer, SDL_Texture* _src) {
     int width, height; SDL_QueryTexture(_src, nullptr, nullptr, &width, &height);
     SDL_Texture* texture = CreateTexture(renderer, width, height);
@@ -17,6 +10,13 @@ SDL_Texture* CopyTexture(SDL_Renderer* renderer, SDL_Texture* _src) {
 
     return texture;
 }
+SDL_Texture* CreateTexture(SDL_Renderer* renderer, int width, int height) {
+    SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
+    return texture;
+}
+
 SDL_Texture* AddTexture(SDL_Renderer* renderer, SDL_Texture* _dst, SDL_Texture* _src, SDL_Rect* pos) {
     SDL_SetRenderTarget(renderer, _dst);
     SDL_RenderCopy(renderer, _src, nullptr, pos);
@@ -38,7 +38,7 @@ SDL_Texture* AddTexture(SDL_Renderer* renderer, SDL_Texture* _dst, SDL_Surface* 
 SDL_Texture* AddTexture(SDL_Renderer* renderer, SDL_Texture* _dst, SDL_Rect* _src, SDL_Color* color) {
     SDL_SetRenderTarget(renderer, _dst);
     SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a);
-    SDL_RenderDrawRect(renderer, _src);
+    SDL_RenderFillRect(renderer, _src);
     SDL_SetRenderTarget(renderer, nullptr);
 
     return _dst;

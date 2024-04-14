@@ -48,12 +48,7 @@ Renderer::Renderer(std::string title, int width, int height, std::string icon) {
 Renderer::~Renderer() {
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
-
-    IMG_Quit();
-    Mix_Quit();
-    TTF_Quit();
-    SDL_Quit();
-
+    IMG_Quit(), Mix_Quit(), TTF_Quit(), SDL_Quit();
     std::cout << "Finish clear renderer" << std::endl;
 }
 
@@ -65,6 +60,6 @@ void Renderer::Clear() const {
 void Renderer::Draw(Entity* sprite) const {
     if (sprite->GetCurrentTexture() == nullptr) return;
     SDL_Rect position = sprite->GetDisplayPos();
-    SDL_RenderCopyEx(this->renderer, sprite->GetCurrentTexture(), nullptr, &position, sprite->GetAngle(), nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(this->renderer, sprite->GetCurrentTexture(), NULL, &position, sprite->GetAngle(), NULL, SDL_FLIP_NONE);
 }
 void Renderer::Render() const { SDL_RenderPresent(this->renderer); }

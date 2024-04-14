@@ -31,7 +31,7 @@ public:
     Entity(const Entity& sprite);
     ~Entity();
 
-    Entity* SetSprite(std::string name);
+    Entity* SetSprite(std::string name = "default");
     Entity* AddSprite(std::string name, SDL_Texture* texture);
     Entity* AddSprite(std::string name, SDL_Surface* surface);
     Entity* AddSprite(std::string name, int width, int height);
@@ -58,13 +58,13 @@ public:
 
     SDL_Rect GetDisplayPos() const { return pos; }
     Entity* SetDisplayPos(SDL_Rect val) { this->pos = val; return this; }
-    Entity* SetDisplayPos(SDL_Rect* val) { this->pos = *val; return this; }
+    Entity* SetDisplayPos(SDL_Rect* val) { this->pos = { val->x,val->y,val->w,val->h }; return this; }
     Entity* SetDisplayPos(int x, int y) { this->pos.x = x, this->pos.y = y; return this; }
 
     int GetCurrentTextureWidth() const { return this->width; }
     int GetCurrentTextureHeight() const { return this->height; }
 
-    Script<void, Entity*>* AddScripts(std::function<void(Entity*)> callback);
+    Script<void, Entity*>* AddScript(std::function<void(Entity*)> callback);
     Script<void, Entity*>* SetScriptState(Script<void, Entity*>* script, bool state);
     void RunScripts() { for (auto& f : scripts) if (f->enable) f->callback(this); }
 };

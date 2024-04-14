@@ -10,13 +10,17 @@
 class Scene : public Manager<std::string, Entity*> {
 private:
     Renderer* renderer;
-    std::function<void(EventManager* events)> loopFunc;
+    std::function<void(Scene*, EventManager* events)> loop;
 
 public:
-    Scene(Renderer* renderer) : renderer(renderer), loopFunc([&](EventManager* events) {}) {}
+    Scene(Renderer* renderer, std::function<void(Scene*, EventManager*)> func = [](Scene*, EventManager*) {}) : renderer(renderer), loop(func) {}
     ~Scene() { for (auto& [key, en] : pools) en->~Entity(); };
 
-    void SetMainLoop(std::function<void(EventManager* events)>func) { this->loopFunc = func; }
-    std::function<void(EventManager* events)> GetMainLoop() const { return loopFunc; }
+    void LoopFunc(EventManager* events) { loop(this, events); };
+    Renderer* GetRenderer() const { return renderer; }
 };
 
+void InitStartScene(Scene* scene);
+
+
+void NormalLoop(Scene* scene, EventManager* events);

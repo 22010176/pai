@@ -9,13 +9,26 @@ SDL_Texture* Entity::CreateTexture(int width, int height) const {
     return texture;
 }
 
-Entity::Entity(Renderer* renderer, SDL_Surface* surface) : renderer(renderer) { AddSprite("default", surface); }
-Entity::Entity(Renderer* renderer, SDL_Texture* texture) : renderer(renderer) { AddSprite("default", texture); }
-Entity::Entity(Renderer* renderer, int width, int height) : renderer(renderer) { AddSprite("default", width, height); }
-Entity::Entity(const Entity& sprite) : renderer(sprite.renderer) { AddSprite("default", sprite.GetCurrentTexture()); }
+Entity::Entity(Renderer* renderer, SDL_Surface* surface) : renderer(renderer) {
+    AddSprite("default", surface);
+    SetSprite();
+}
+Entity::Entity(Renderer* renderer, SDL_Texture* texture) : renderer(renderer) {
+    AddSprite("default", texture);
+    SetSprite();
+}
+Entity::Entity(Renderer* renderer, int width, int height) : renderer(renderer) {
+    AddSprite("default", width, height);
+    SetSprite();
+}
+Entity::Entity(const Entity& sprite) : renderer(sprite.renderer) {
+    AddSprite("default", sprite.GetCurrentTexture());
+    SetSprite();
+}
 Entity::~Entity() {
     for (auto& s : scripts) delete s;
     for (auto& [key, tex] : pools) SDL_DestroyTexture(tex);
+    std::cout << "Clear Entity" << std::endl;
 }
 
 SDL_Texture* Entity::ExportCurrentTexture() const {
@@ -80,7 +93,7 @@ Entity* Entity::AddTexture(SDL_Rect* rect, SDL_Color color) { AddTexture(rect, &
 Entity* Entity::AddTexture(SDL_Rect* rect, SDL_Color* color) {
     SDL_SetRenderTarget(renderer->GetRenderer(), this->texture);
     SDL_SetRenderDrawColor(renderer->GetRenderer(), color->r, color->g, color->b, color->a);
-    SDL_RenderDrawRect(renderer->GetRenderer(), rect);
+    SDL_RenderFillRect(renderer->GetRenderer(), rect);
     SDL_SetRenderTarget(renderer->GetRenderer(), nullptr);
 
     return this;
@@ -89,10 +102,10 @@ Entity* Entity::AddTexture(SDL_Rect* rect, SDL_Color* color) {
 Entity* Entity::AddTexture(int outlineSize, SDL_Color color) { AddTexture(outlineSize, &color); return this; }
 Entity* Entity::AddTexture(int outlineSize, SDL_Color* color) {
     SDL_Rect s[]{
-        { 0,0,this->width,width },
-        { 0,this->height - width,this->width,width },
-        { 0,0,width,this->height },
-        { this->width - width,0,width,this->width },
+        { 0,0,this->width,outlineSize },
+        { 0,this->height - outlineSize,this->width,outlineSize },
+        { 0,0,outlineSize,this->height },
+        { this->width - outlineSize,0,outlineSize,this->width },
     };
 
     SDL_SetRenderTarget(renderer->GetRenderer(), this->texture);
@@ -103,7 +116,7 @@ Entity* Entity::AddTexture(int outlineSize, SDL_Color* color) {
     return this;
 }
 
-Script<void, Entity*>* Entity::AddScripts(std::function<void(Entity*)> callback) {
+Script<void, Entity*>* Entity::AddScript(std::function<void(Entity*)> callback) {
     Script<void, Entity*>* script = new Script<void, Entity*>{ true,callback };
     scripts.push_back(script);
 
