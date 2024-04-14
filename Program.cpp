@@ -11,7 +11,7 @@
 #include <src/Scene.h>
 #include <src/Constant.h>
 
-Renderer renderer("", 1280, 720);
+Renderer renderer("", 1280, 720, "assets\\imgs\\icon.png");
 EventManager eventManager;
 Scene mainScene(&renderer);
 

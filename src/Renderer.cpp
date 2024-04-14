@@ -39,7 +39,7 @@ Renderer::Renderer(std::string title, int width, int height, std::string icon) {
     std::cout << "Successful initialize library!" << std::endl;
 
     if (icon == "") return;
-    SDL_Surface* surface = IMG_Load("assets/imgs/icon.jpg");
+    SDL_Surface* surface = IMG_Load(icon.c_str());
     SDL_SetWindowIcon(this->window, surface);
 
     SDL_FreeSurface(surface);
