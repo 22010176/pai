@@ -17,6 +17,9 @@ Renderer renderer("", 1280, 720, "assets\\imgs\\icon.png");
 EventManager eventManager;
 Scene startScene = Scene(&renderer, NormalLoop);
 
+// cd obj; g++ -c C:\Users\ducmi\Downloads\e\src\*.cpp -IC:\Users\ducmi\Downloads\e\include; cd ..
+// g++ -shared -o bin/program obj/*.o -IC:\Users\ducmi\Downloads\e\include -LC:\Users\ducmi\Downloads\e\bin\lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer      
+
 int main(int argc, char* agrv[]) {
     InitStartScene(&startScene);
 

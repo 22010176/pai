@@ -15,7 +15,6 @@ void LogoAnimation(Entity* entity) {
 
 void InitStartScene(Scene* scene) {
     int width, height; SDL_GetWindowSize(scene->GetRenderer()->GetWindow(), &width, &height);
-
     SDL_Rect btnSize = { 0,0,350,70 };
     int offset = 50;
     TTF_Font* font = TTF_OpenFont("assets\\fonts\\Source Code Pro\\SourceCodePro-ExtraBold.ttf", 50);
@@ -44,47 +43,14 @@ void InitStartScene(Scene* scene) {
     Entity* logo = new Entity(scene->GetRenderer(), logoT);
     logo->SetDisplayPos({ CalcPadding<int>(width,600),50,600,200 })
         ->SetAngle(-10);
-
-
     logo->AddScript(LogoAnimation);
 
-    // Entity& cover = *new Entity(renderer, WIDTH, HEIGHT);
     scene->AddItem("playBtn", playBtn);
     scene->AddItem("playBtn", playBtn);
     scene->AddItem("optBtn", optBtn);
     scene->AddItem("quitBtn", quitBtn);
     scene->AddItem("imgS", imgS);
     scene->AddItem("logo", logo);
-
-    // this->GetEntity("quitBtn").AddUpdateFunc("quitEvent", [&](Entity& entity) {
-    //     static bool isHover = false;
-    //     static SDL_Rect pos = entity.GetPos();
-
-    //     SDL_Point mousePos = renderer.GetMousePos();
-    //     isHover = CheckCollide(&pos, &mousePos);
-
-    //     if (isHover && renderer.CheckEvent(SDL_MOUSEBUTTONUP)) renderer.TerminateProgram();
-    //     });
-
-    // this->GetEntity("optBtn").AddUpdateFunc("changeOptEvent", [&](Entity& entity) {
-    //     static bool isHover = false;
-    //     static SDL_Rect pos = entity.GetPos();
-
-    //     SDL_Point mousePos = renderer.GetMousePos();
-    //     isHover = CheckCollide(&pos, &mousePos);
-
-    //     if (isHover && renderer.CheckEvent(SDL_MOUSEBUTTONUP)) renderer.SetMainLoop(OptionScene::Get().GetLoopFunc());
-    //     });
-
-    // this->GetEntity("optBtn").AddUpdateFunc("changeOptEvent", [&](Entity& entity) {
-    //     static bool isHover = false;
-    //     static SDL_Rect pos = entity.GetPos();
-
-    //     SDL_Point mousePos = renderer.GetMousePos();
-
-    //     isHover = CheckCollide(&pos, &mousePos);
-    //     if (isHover && renderer.CheckEvent(SDL_MOUSEBUTTONUP)) renderer.SetMainLoop(OptionScene::Get().GetLoopFunc());
-    //     });
 
     TTF_CloseFont(font);
     TTF_CloseFont(bigFont);
